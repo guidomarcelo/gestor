@@ -1,0 +1,2226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repositorio Digital de Inmuebles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6b8e23; /* Verde Olivo */
+            --primary-dark: #556b2f; /* Verde Olivo Oscuro */
+            --secondary: #3e4d13;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 10px;
+            --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            font-size: 2.2rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem 0;
+            min-height: calc(100vh - 200px);
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .page-title {
+            margin-bottom: 2rem;
+            color: var(--dark);
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-title i {
+            color: var(--primary);
+        }
+
+        /* Dashboard */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: rgba(67, 97, 238, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .stat-info h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .stat-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .recent-activity {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .recent-activity h3 {
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            font-size: 1.3rem;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(107, 142, 35, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .activity-info p {
+            font-size: 0.95rem;
+        }
+
+        .activity-info .time {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* Inmuebles Page */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+            flex-grow: 1;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(107, 142, 35, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: var(--light-gray);
+            color: var(--dark);
+        }
+
+        .btn-secondary:hover {
+            background-color: #dde0e5;
+        }
+
+        .inmuebles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .inmueble-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .inmueble-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .inmueble-img {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+        }
+
+        .inmueble-info {
+            padding: 1.5rem;
+        }
+
+        .inmueble-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .inmueble-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .inmueble-type {
+            background-color: rgba(107, 142, 35, 0.1);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .inmueble-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--gray);
+        }
+
+        .inmueble-detail {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .inmueble-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .inmueble-docs {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Formularios */
+        .form-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--box-shadow);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .file-upload-area {
+            border: 2px dashed var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .file-upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.02);
+        }
+
+        .file-upload-area i {
+            font-size: 3rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .file-upload-area p {
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+
+        .file-upload-area span {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        #file-list {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: var(--light-gray);
+            border-radius: 5px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-actions button {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: var(--dark);
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--dark);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .docs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .doc-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--light-gray);
+            border-radius: var(--border-radius);
+        }
+
+        .doc-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .doc-icon {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .doc-details h4 {
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .doc-details p {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .doc-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .doc-actions button {
+            width: 35px;
+            height: 35px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Drop Zone Styles */
+        .drop-zone {
+            border: 2px dashed var(--primary);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: rgba(107, 142, 35, 0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .drop-zone:hover, .drop-zone.dragover {
+            background-color: rgba(107, 142, 35, 0.1);
+            border-style: solid;
+        }
+
+        .drop-zone i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .drop-zone p {
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .drop-zone span {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .file-preview-list {
+            margin-top: 1.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .file-preview-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: var(--light-gray);
+            border-radius: 5px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .file-preview-item .remove-file {
+            color: #dc3545;
+            cursor: pointer;
+        }
+
+        .doc-actions button {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .btn-view {
+            background-color: rgba(107, 142, 35, 0.1);
+            color: var(--primary);
+        }
+
+        .btn-view:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-download {
+            background-color: rgba(33, 37, 41, 0.05);
+            color: var(--dark);
+        }
+
+        .btn-download:hover {
+            background-color: var(--dark);
+            color: white;
+        }
+
+        .btn-edit {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: #ffc107;
+        }
+
+        .btn-edit:hover {
+            background-color: #ffc107;
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .btn-delete:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .inmuebles-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            
+            nav {
+                display: none;
+                width: 100%;
+                order: 3;
+                margin-top: 1rem;
+            }
+            
+            nav.active {
+                display: block;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .inmuebles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-building"></i>
+                <span>Gestor Documental</span>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="#" class="nav-link active" data-page="dashboard">Dashboard</a></li>
+                    <li><a href="#" class="nav-link" data-page="inmuebles">Inmuebles</a></li>
+                    <li><a href="#" class="nav-link" data-page="registro">Registrar Inmueble</a></li>
+                    <li><a href="#" class="nav-link" data-page="documentos">Documentos</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <!-- Dashboard -->
+        <section id="dashboard" class="page active">
+            <h1 class="page-title"><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-inmuebles">0</h3>
+                        <p>Inmuebles Registrados</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-documentos">0</h3>
+                        <p>Documentos Adjuntos</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="total-tipos">0</h3>
+                        <p>Tipos de Inmueble</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="ultima-actualizacion">-</h3>
+                        <p>Última Actualización</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recent-activity">
+                <h3>Actividad Reciente</h3>
+                <div class="activity-list" id="activity-list">
+                    <!-- Las actividades se cargarán con JavaScript -->
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="activity-info">
+                            <p>Bienvenido al Repositorio Digital de Inmuebles</p>
+                            <p class="time">Recién iniciado</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Inmuebles -->
+        <section id="inmuebles" class="page">
+            <h1 class="page-title"><i class="fas fa-building"></i> Inmuebles Registrados</h1>
+            
+            <div class="controls">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInmuebles" placeholder="Buscar inmuebles...">
+                </div>
+                
+                <button class="btn btn-primary" id="btnNuevoInmueble">
+                    <i class="fas fa-plus"></i> Nuevo Inmueble
+                </button>
+            </div>
+            
+            <div class="inmuebles-grid" id="inmueblesGrid">
+                <!-- Los inmuebles se cargarán con JavaScript -->
+                <div class="inmueble-card">
+                    <div class="inmueble-img">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="inmueble-info">
+                        <div class="inmueble-header">
+                            <h3 class="inmueble-title">Casa de Ejemplo</h3>
+                            <span class="inmueble-type">Casa</span>
+                        </div>
+                        
+                        <div class="inmueble-details">
+                            <div class="inmueble-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Ciudad de México</span>
+                            </div>
+                            <div class="inmueble-detail">
+                                <i class="fas fa-arrows-alt"></i>
+                                <span>150 m²</span>
+                            </div>
+                            <div class="inmueble-detail">
+                                <i class="fas fa-bed"></i>
+                                <span>3 habitaciones</span>
+                            </div>
+                        </div>
+                        
+                        <div class="inmueble-actions">
+                            <div class="inmueble-docs">
+                                <i class="fas fa-paperclip"></i>
+                                <span>3 documentos</span>
+                            </div>
+                            <button class="btn btn-secondary btn-ver-detalle">
+                                <i class="fas fa-eye"></i> Ver
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Registrar Inmueble -->
+        <section id="registro" class="page">
+            <h1 class="page-title"><i class="fas fa-plus-circle"></i> Registrar Nuevo Inmueble</h1>
+            
+            <div class="form-container">
+                <form id="formRegistroInmueble">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nombre">Nombre del Inmueble *</label>
+                            <input type="text" id="nombre" name="nombre" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tipo">Tipo de Inmueble *</label>
+                            <select id="tipo" name="tipo" required>
+                                <option value="">Seleccionar tipo</option>
+                                <option value="casa">Casa</option>
+                                <option value="departamento">Departamento</option>
+                                <option value="oficina">Oficina</option>
+                                <option value="local">Local Comercial</option>
+                                <option value="terreno">Terreno</option>
+                                <option value="bodega">Bodega</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="direccion">Dirección *</label>
+                            <input type="text" id="direccion" name="direccion" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ciudad">Ciudad *</label>
+                            <input type="text" id="ciudad" name="ciudad" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="metros">Metros Cuadrados *</label>
+                            <input type="number" id="metros" name="metros" min="1" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="habitaciones">Habitaciones</label>
+                            <input type="number" id="habitaciones" name="habitaciones" min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="banos">Baños</label>
+                            <input type="number" id="banos" name="banos" min="0" step="0.5">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="estacionamientos">Estacionamientos</label>
+                            <input type="number" id="estacionamientos" name="estacionamientos" min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="descripcion">Descripción</label>
+                        <textarea id="descripcion" name="descripcion" rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ubicacionLink"><i class="fas fa-map-marked-alt"></i> Link de Ubicación (Google Maps)</label>
+                        <input type="url" id="ubicacionLink" name="ubicacionLink" placeholder="https://goo.gl/maps/...">
+                    </div>
+                    
+                    
+                    <div class="form-group" style="margin-top: 2rem;">
+                        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">
+                            <i class="fas fa-save"></i> Registrar Inmueble
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+        
+        <!-- Documentos -->
+        <section id="documentos" class="page">
+            <h1 class="page-title"><i class="fas fa-folder-open"></i> Documentos</h1>
+            
+            <div class="controls" style="flex-wrap: wrap; gap: 15px;">
+                <div class="search-box" style="flex: 1; min-width: 250px;">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchDocumentos" placeholder="Buscar por nombre o inmueble...">
+                </div>
+                
+                <div style="display: flex; gap: 10px; flex: 1; min-width: 250px;">
+                    <select id="filterCategoria" class="btn btn-secondary" style="flex: 1; text-align: left; padding-right: 30px; -webkit-appearance: none; appearance: none; position: relative;">
+                        <option value="">Todas las categorías</option>
+                        <!-- Se llena dinámicamente -->
+                    </select>
+                    <select id="filterInmueble" class="btn btn-secondary" style="flex: 1; text-align: left; padding-right: 30px; -webkit-appearance: none; appearance: none;">
+                        <option value="">Todos los inmuebles</option>
+                        <!-- Se llena dinámicamente -->
+                    </select>
+                </div>
+            </div>
+            
+            <div class="docs-list" id="docsList">
+                <!-- Los documentos se cargarán con JavaScript -->
+                <div class="doc-item">
+                    <div class="doc-info">
+                        <div class="doc-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="doc-details">
+                            <h4>Escritura Pública - Casa Ejemplo</h4>
+                            <p>Inmueble: Casa de Ejemplo • Tamaño: 2.4 MB • Fecha: 15/10/2023</p>
+                        </div>
+                    </div>
+                    <div class="doc-actions">
+                        <button class="btn-view">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                        <button class="btn-download">
+                            <i class="fas fa-download"></i> Descargar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Modal para documentos del inmueble -->
+    <div class="modal" id="documentosModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Documentos del Inmueble</h3>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <button class="btn btn-primary btn-sm" id="btnModalAddDoc" style="padding: 5px 10px; font-size: 0.8rem;">
+                        <i class="fas fa-plus"></i> Añadir
+                    </button>
+                    <button class="close-modal" id="closeModal" style="position: static; margin-left: 10px;">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div id="modalDocsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Subir Documentos con Drag & Drop -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3>Adjuntar Documentos</h3>
+                <button class="close-modal" id="closeUploadModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="drop-zone" id="uploadDropZone">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Arrastra y suelta tus archivos aquí</p>
+                    <span>o haz clic para buscar en tu equipo</span>
+                    <input type="file" id="modalFileInput" multiple style="display: none;">
+                </div>
+                
+                <div id="filePreviewList" class="file-preview-list">
+                    <!-- Los archivos seleccionados aparecerán aquí -->
+                </div>
+                
+                <div class="form-group" id="modalCategoryGroup" style="display: none; margin-top: 15px;">
+                    <label for="modalUploadCategoria">Categoría para estos documentos:</label>
+                    <select id="modalUploadCategoria" class="form-control" style="width: 100%; padding: 10px; margin-top: 5px;">
+                        <!-- Se llena dinámicamente -->
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" id="btnConfirmarSubida" style="width: 100%; margin-top: 20px;" disabled>
+                    <i class="fas fa-check"></i> Subir Documentos
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Input de archivo oculto para añadir documentos a inmuebles existentes -->
+    
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-building"></i>
+                <span>Repositorio Digital de Inmuebles</span>
+            </div>
+            <p>Sistema de gestión y almacenamiento de documentos de inmuebles</p>
+            <p>© 2023 - Todos los derechos reservados</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Definir categorías de documentos
+        const categoriasDocumentos = [
+            { id: 'escritura', nombre: 'Escritura Pública', icono: 'fa-file-contract' },
+            { id: 'contrato', nombre: 'Contrato de Arrendamiento', icono: 'fa-file-signature' },
+            { id: 'plano', nombre: 'Plano Arquitectónico', icono: 'fa-drafting-compass' },
+            { id: 'identificacion', nombre: 'Identificación Oficial', icono: 'fa-id-card' },
+            { id: 'impuesto', nombre: 'Pago de Impuestos/Servicios', icono: 'fa-receipt' },
+            { id: 'referencia', nombre: 'Imágenes de Referencia', icono: 'fa-image' },
+            { id: 'otro', nombre: 'Otro Documento', icono: 'fa-file' }
+        ];
+
+        // Datos iniciales (simulando una base de datos)
+        let inmuebles = [];
+        let documentos = [];
+        let actividad = [];
+        
+        // Inicializar con datos vacíos
+        function inicializarDatosEjemplo() {
+            inmuebles = [];
+            documentos = [];
+            actividad = [];
+            
+            // Guardar en localStorage
+            guardarDatosEnStorage();
+        }
+        
+        // Guardar datos en localStorage
+        function guardarDatosEnStorage() {
+            localStorage.setItem('inmuebles', JSON.stringify(inmuebles));
+            localStorage.setItem('documentos', JSON.stringify(documentos));
+            localStorage.setItem('actividad', JSON.stringify(actividad));
+        }
+        
+        // Cargar datos desde localStorage
+        function cargarDatosDesdeStorage() {
+            const inmueblesStorage = localStorage.getItem('inmuebles');
+            const documentosStorage = localStorage.getItem('documentos');
+            const actividadStorage = localStorage.getItem('actividad');
+            
+            if (inmueblesStorage) {
+                inmuebles = JSON.parse(inmueblesStorage);
+            }
+            
+            if (documentosStorage) {
+                documentos = JSON.parse(documentosStorage);
+            }
+            
+            if (actividadStorage) {
+                actividad = JSON.parse(actividadStorage);
+            }
+        }
+        
+        // Navegación entre páginas
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remover clase active de todos los enlaces
+                document.querySelectorAll('.nav-link').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Agregar clase active al enlace clickeado
+                this.classList.add('active');
+                
+                // Ocultar todas las páginas
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Mostrar la página correspondiente
+                const pageId = this.getAttribute('data-page');
+                document.getElementById(pageId).classList.add('active');
+                
+                // Actualizar dashboard cuando se muestra
+                if (pageId === 'dashboard') {
+                    actualizarDashboard();
+                }
+                
+                // Actualizar lista de inmuebles cuando se muestra
+                if (pageId === 'inmuebles') {
+                    cargarInmuebles();
+                }
+                
+                // Actualizar lista de documentos cuando se muestra
+                if (pageId === 'documentos') {
+                    cargarDocumentos();
+                }
+                
+                // Cerrar menú móvil si está abierto
+                document.getElementById('mainNav').classList.remove('active');
+            });
+        });
+        
+        // Alternar menú móvil
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            document.getElementById('mainNav').classList.toggle('active');
+        });
+        
+        // Cargar inmuebles en la página correspondiente
+        function cargarInmuebles(inmueblesAMostrar = null) {
+            const listaInmuebles = inmueblesAMostrar || inmuebles;
+            const inmueblesGrid = document.getElementById('inmueblesGrid');
+            
+            // Limpiar grid
+            inmueblesGrid.innerHTML = '';
+            
+            // Si no hay inmuebles, mostrar mensaje
+            if (listaInmuebles.length === 0) {
+                if (inmueblesAMostrar) {
+                    // Si es resultado de búsqueda
+                    inmueblesGrid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: white; border-radius: var(--border-radius);">
+                            <i class="fas fa-search" style="font-size: 3rem; color: var(--light-gray); margin-bottom: 1rem;"></i>
+                            <h3 style="color: var(--gray);">No se encontraron inmuebles</h3>
+                            <p style="color: var(--gray);">Intenta con otros términos de búsqueda</p>
+                        </div>
+                    `;
+                } else {
+                    // Si es la lista general vacía
+                    inmueblesGrid.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: white; border-radius: var(--border-radius);">
+                            <i class="fas fa-home" style="font-size: 3rem; color: var(--light-gray); margin-bottom: 1rem;"></i>
+                            <h3 style="color: var(--gray); margin-bottom: 1rem;">No hay inmuebles registrados</h3>
+                            <p style="color: var(--gray); margin-bottom: 1.5rem;">Comienza registrando tu primer inmueble</p>
+                            <button class="btn btn-primary" id="btnIrRegistro">
+                                <i class="fas fa-plus"></i> Registrar Inmueble
+                            </button>
+                        </div>
+                    `;
+                    
+                    document.getElementById('btnIrRegistro').addEventListener('click', function() {
+                        document.querySelector('[data-page="registro"]').click();
+                    });
+                }
+                
+                return;
+            }
+            
+            // Crear tarjeta para cada inmueble
+            listaInmuebles.forEach(inmueble => {
+                const documentosInmueble = documentos.filter(doc => doc.inmuebleId === inmueble.id);
+                
+                // Obtener ícono según tipo
+                let icono = 'fa-home';
+                if (inmueble.tipo === 'departamento') icono = 'fa-building';
+                if (inmueble.tipo === 'oficina') icono = 'fa-briefcase';
+                if (inmueble.tipo === 'local') icono = 'fa-store';
+                if (inmueble.tipo === 'terreno') icono = 'fa-map';
+                if (inmueble.tipo === 'bodega') icono = 'fa-warehouse';
+                
+                // Formatear tipo para mostrar
+                let tipoTexto = inmueble.tipo.charAt(0).toUpperCase() + inmueble.tipo.slice(1);
+                
+                const inmuebleCard = document.createElement('div');
+                inmuebleCard.className = 'inmueble-card';
+                inmuebleCard.innerHTML = `
+                    <div class="inmueble-img">
+                        <i class="fas ${icono}"></i>
+                    </div>
+                    <div class="inmueble-info">
+                        <div class="inmueble-header">
+                            <h3 class="inmueble-title">${inmueble.nombre}</h3>
+                            <div style="display: flex; gap: 5px; align-items: center;">
+                                ${inmueble.ubicacionLink ? `<a href="${inmueble.ubicacionLink}" target="_blank" title="Ver ubicación en mapa" style="color: #ea4335; font-size: 1.1rem;"><i class="fas fa-map-marked-alt"></i></a>` : ''}
+                                <span class="inmueble-type">${tipoTexto}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="inmueble-details">
+                            <div class="inmueble-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${inmueble.ciudad}</span>
+                            </div>
+                            <div class="inmueble-detail">
+                                <i class="fas fa-arrows-alt"></i>
+                                <span>${inmueble.metros} m²</span>
+                            </div>
+                            ${inmueble.habitaciones > 0 ? `
+                            <div class="inmueble-detail">
+                                <i class="fas fa-bed"></i>
+                                <span>${inmueble.habitaciones} hab.</span>
+                            </div>` : ''}
+                        </div>
+                        
+                        <div class="inmueble-actions">
+                            <button class="btn btn-secondary btn-ver-detalle" data-id="${inmueble.id}">
+                                <i class="fas fa-eye"></i> Ver (${documentosInmueble.length})
+                            </button>
+                            <button class="btn btn-primary btn-sm btn-add-doc" data-id="${inmueble.id}" title="Añadir Documento">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm btn-delete-inmueble" data-id="${inmueble.id}" title="Eliminar Inmueble">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                inmueblesGrid.appendChild(inmuebleCard);
+            });
+            
+            // Agregar eventos a los botones de ver detalle
+            inmueblesGrid.querySelectorAll('.btn-ver-detalle').forEach(button => {
+                button.addEventListener('click', function() {
+                    const inmuebleId = parseInt(this.getAttribute('data-id'));
+                    mostrarDocumentosInmueble(inmuebleId);
+                });
+            });
+
+            // Evento para añadir documento a un inmueble específico
+            inmueblesGrid.querySelectorAll('.btn-add-doc').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const inmuebleId = parseInt(this.getAttribute('data-id'));
+                    abrirModalUpload(inmuebleId);
+                });
+            });
+
+            // Evento para eliminar inmueble
+            inmueblesGrid.querySelectorAll('.btn-delete-inmueble').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const inmuebleId = parseInt(this.getAttribute('data-id'));
+                    const inmueble = inmuebles.find(i => i.id === inmuebleId);
+                    
+                    if (confirm(`¿Estás seguro de que deseas eliminar el inmueble "${inmueble.nombre}"? Esta acción también eliminará todos sus documentos asociados permanentemente.`)) {
+                        // Eliminar documentos asociados
+                        documentos = documentos.filter(doc => doc.inmuebleId !== inmuebleId);
+                        // Eliminar inmueble
+                        inmuebles = inmuebles.filter(i => i.id !== inmuebleId);
+                        
+                        guardarDatosEnStorage();
+                        cargarInmuebles();
+                        actualizarDashboard();
+                        
+                        alert("Inmueble y documentos eliminados correctamente.");
+                    }
+                });
+            });
+        }
+
+        // Variable global para rastrear el inmueble actual en el modal
+        let currentModalInmuebleId = null;
+        let pendingFiles = [];
+        let pendingInmuebleId = null;
+
+        // --- Lógica de Subida de Documentos (Drag & Drop) ---
+        
+        const uploadModal = document.getElementById('uploadModal');
+        const uploadDropZone = document.getElementById('uploadDropZone');
+        const modalFileInput = document.getElementById('modalFileInput');
+        const filePreviewList = document.getElementById('filePreviewList');
+        const btnConfirmarSubida = document.getElementById('btnConfirmarSubida');
+        const modalUploadCategoria = document.getElementById('modalUploadCategoria');
+        const modalCategoryGroup = document.getElementById('modalCategoryGroup');
+
+        function abrirModalUpload(inmuebleId) {
+            pendingInmuebleId = inmuebleId;
+            pendingFiles = [];
+            filePreviewList.innerHTML = '';
+            btnConfirmarSubida.disabled = true;
+            modalCategoryGroup.style.display = 'none';
+            
+            // Llenar categorías
+            modalUploadCategoria.innerHTML = '';
+            categoriasDocumentos.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat.id;
+                option.textContent = cat.nombre;
+                modalUploadCategoria.appendChild(option);
+            });
+            
+            uploadModal.classList.add('active');
+        }
+
+        // Cerrar modal de subida
+        document.getElementById('closeUploadModal').addEventListener('click', () => {
+            uploadModal.classList.remove('active');
+        });
+
+        // Click en zona de drop para abrir buscador
+        uploadDropZone.addEventListener('click', () => {
+            modalFileInput.click();
+        });
+
+        // Eventos de Drag & Drop
+        uploadDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadDropZone.classList.add('dragover');
+        });
+
+        uploadDropZone.addEventListener('dragleave', () => {
+            uploadDropZone.classList.remove('dragover');
+        });
+
+        uploadDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadDropZone.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            handleSelectedFiles(files);
+        });
+
+        // Cambio en input de archivos
+        modalFileInput.addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            handleSelectedFiles(files);
+            e.target.value = ''; // Reset para permitir seleccionar el mismo archivo
+        });
+
+        function handleSelectedFiles(files) {
+            if (files.length === 0) return;
+            
+            files.forEach(file => {
+                // Evitar duplicados por nombre
+                if (!pendingFiles.find(f => f.name === file.name)) {
+                    pendingFiles.push(file);
+                }
+            });
+            
+            renderFilePreviews();
+            
+            if (pendingFiles.length > 0) {
+                btnConfirmarSubida.disabled = false;
+                modalCategoryGroup.style.display = 'block';
+            }
+        }
+
+        async function renderFilePreviews() {
+            filePreviewList.innerHTML = '';
+            for (let i = 0; i < pendingFiles.length; i++) {
+                const file = pendingFiles[i];
+                const index = i;
+                const item = document.createElement('div');
+                item.className = 'file-preview-item';
+                
+                let previewHtml = `<i class="fas fa-file-alt" style="margin-right: 8px; color: var(--primary);"></i>`;
+                
+                // Si es imagen, intentar mostrar miniatura
+                if (file.type.startsWith('image/')) {
+                    const base64 = await readFileAsBase64(file);
+                    previewHtml = `<img src="${base64}" style="width: 30px; height: 30px; object-fit: cover; border-radius: 4px; margin-right: 8px; border: 1px solid var(--light-gray);">`;
+                }
+                
+                item.innerHTML = `
+                    <div style="display: flex; align-items: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;">
+                        ${previewHtml}
+                        <span style="font-size: 0.85rem;">${file.name}</span>
+                    </div>
+                    <i class="fas fa-times remove-file" data-index="${index}" style="cursor: pointer; padding: 5px; color: var(--gray);"></i>
+                `;
+                filePreviewList.appendChild(item);
+            }
+            
+            // Eventos para eliminar archivos de la lista
+            filePreviewList.querySelectorAll('.remove-file').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const index = parseInt(e.target.getAttribute('data-index'));
+                    pendingFiles.splice(index, 1);
+                    renderFilePreviews();
+                    
+                    if (pendingFiles.length === 0) {
+                        btnConfirmarSubida.disabled = true;
+                        modalCategoryGroup.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Confirmar subida de documentos
+        btnConfirmarSubida.addEventListener('click', async function() {
+            const categoria = modalUploadCategoria.value;
+            const inmueble = inmuebles.find(i => i.id === pendingInmuebleId);
+            
+            if (!inmueble || pendingFiles.length === 0) return;
+            
+            const btnOriginalText = btnConfirmarSubida.innerHTML;
+            btnConfirmarSubida.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subiendo...';
+            btnConfirmarSubida.disabled = true;
+            
+            try {
+                for (const file of pendingFiles) {
+                    const base64Data = await readFileAsBase64(file);
+                    const nuevoDocumento = {
+                        id: documentos.length > 0 ? Math.max(...documentos.map(d => d.id)) + 1 : 1,
+                        nombre: file.name,
+                        categoria: categoria,
+                        tipo: file.name.split('.').pop().toLowerCase(),
+                        tamaño: `${(file.size / 1024 / 1024).toFixed(1)} MB`,
+                        fecha: new Date().toISOString().split('T')[0],
+                        inmuebleId: pendingInmuebleId,
+                        data: base64Data
+                    };
+                    
+                    documentos.push(nuevoDocumento);
+                    if (!inmueble.documentos) inmueble.documentos = [];
+                    inmueble.documentos.push(nuevoDocumento.id);
+                    
+                    // Registrar actividad
+                    actividad.unshift({
+                        tipo: 'subida',
+                        descripcion: `Se añadió el documento '${file.name}' al inmueble '${inmueble.nombre}'`,
+                        fecha: new Date().toISOString().split('T')[0]
+                    });
+                }
+                
+                guardarDatosEnStorage();
+                uploadModal.classList.remove('active');
+                
+                // Recargar vistas
+                const activePage = document.querySelector('.nav-link.active').getAttribute('data-page');
+                if (activePage === 'documentos') cargarDocumentos();
+                if (activePage === 'inmuebles') {
+                    if (document.getElementById('documentosModal').classList.contains('active')) {
+                        mostrarDocumentosInmueble(pendingInmuebleId);
+                    }
+                    cargarInmuebles();
+                }
+                actualizarDashboard();
+                
+                alert(`${pendingFiles.length} documento(s) subido(s) correctamente.`);
+                pendingFiles = [];
+                pendingInmuebleId = null;
+                
+            } catch (error) {
+                console.error("Error al procesar archivos:", error);
+                alert("Hubo un error al subir los archivos.");
+            } finally {
+                btnConfirmarSubida.innerHTML = btnOriginalText;
+            }
+        });
+
+        // --- Fin Lógica de Subida ---
+
+        // Variable global para rastrear el inmueble actual en el modal
+
+
+        // Evento para el botón de añadir en el modal
+        document.getElementById('btnModalAddDoc').addEventListener('click', function() {
+            if (currentModalInmuebleId) {
+                abrirModalUpload(currentModalInmuebleId);
+            }
+        });
+        
+        // Cargar documentos en la página correspondiente
+        function cargarDocumentos() {
+            const docsList = document.getElementById('docsList');
+            const searchVal = document.getElementById('searchDocumentos').value.toLowerCase();
+            const filterCat = document.getElementById('filterCategoria').value;
+            const filterInm = document.getElementById('filterInmueble').value;
+
+            // Actualizar opciones de filtros si es necesario
+            actualizarOpcionesFiltros();
+
+            // Limpiar lista
+            docsList.innerHTML = '';
+            
+            // Filtrar documentos
+            const documentosFiltrados = documentos.filter(doc => {
+                const inmueble = inmuebles.find(i => i.id === doc.inmuebleId);
+                const matchesSearch = doc.nombre.toLowerCase().includes(searchVal) || 
+                                     (inmueble && inmueble.nombre.toLowerCase().includes(searchVal));
+                const matchesCat = filterCat === "" || doc.categoria === filterCat;
+                const matchesInm = filterInm === "" || doc.inmuebleId.toString() === filterInm;
+                
+                return matchesSearch && matchesCat && matchesInm;
+            });
+
+            // Si no hay documentos, mostrar mensaje
+            if (documentosFiltrados.length === 0) {
+                docsList.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; background: white; border-radius: var(--border-radius); width: 100%;">
+                        <i class="fas fa-search" style="font-size: 3rem; color: var(--light-gray); margin-bottom: 1rem;"></i>
+                        <h3 style="color: var(--gray); margin-bottom: 1rem;">No se encontraron documentos</h3>
+                        <p style="color: var(--gray);">Prueba ajustando los filtros o la búsqueda.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Crear elemento para cada documento
+            documentosFiltrados.forEach(doc => {
+                const inmueble = inmuebles.find(i => i.id === doc.inmuebleId);
+                
+                // Obtener ícono según tipo de archivo
+                let icono = 'fa-file';
+                if (doc.tipo === 'pdf') icono = 'fa-file-pdf';
+                if (doc.tipo === 'doc' || doc.tipo === 'docx') icono = 'fa-file-word';
+                if (doc.tipo === 'xls' || doc.tipo === 'xlsx') icono = 'fa-file-excel';
+                if (doc.tipo === 'jpg' || doc.tipo === 'jpeg' || doc.tipo === 'png') icono = 'fa-file-image';
+                
+                // Obtener datos de categoría
+                const categoria = categoriasDocumentos.find(c => c.id === doc.categoria);
+                
+                const docItem = document.createElement('div');
+                docItem.className = 'doc-item';
+                docItem.innerHTML = `
+                    <div class="doc-info">
+                        <div class="doc-icon">
+                            <i class="fas ${categoria?.icono || icono}"></i>
+                        </div>
+                        <div class="doc-details">
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <h4 style="margin: 0;">${doc.nombre}</h4>
+                                <span class="badge" style="background: var(--olive-green); color: white; font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                    ${categoria?.nombre || 'Sin categoría'}
+                                </span>
+                            </div>
+                            <p style="margin-top: 4px; color: var(--gray); font-size: 0.85rem;">
+                                <i class="fas fa-building" style="width: 14px;"></i> ${inmueble ? inmueble.nombre : 'No asignado'} 
+                                <span style="margin: 0 5px;">•</span>
+                                <i class="fas fa-hdd" style="width: 14px;"></i> ${doc.tamaño} 
+                                <span style="margin: 0 5px;">•</span>
+                                <i class="fas fa-calendar-alt" style="width: 14px;"></i> ${formatearFecha(doc.fecha)}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="doc-actions">
+                        <button class="btn-view" data-id="${doc.id}" title="Ver">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-download" data-id="${doc.id}" title="Descargar">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        <button class="btn-edit" data-id="${doc.id}" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-delete" data-id="${doc.id}" title="Borrar">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+                
+                docsList.appendChild(docItem);
+            });
+            
+            // Agregar eventos a los botones de documentos
+            docsList.querySelectorAll('.btn-view').forEach(button => {
+                button.addEventListener('click', function() {
+                    const docId = parseInt(this.getAttribute('data-id'));
+                    verDocumento(docId);
+                });
+            });
+            
+            docsList.querySelectorAll('.btn-download').forEach(button => {
+                button.addEventListener('click', function() {
+                    const docId = parseInt(this.getAttribute('data-id'));
+                    descargarDocumento(docId);
+                });
+            });
+
+            docsList.querySelectorAll('.btn-edit').forEach(button => {
+                button.addEventListener('click', function() {
+                    const docId = parseInt(this.getAttribute('data-id'));
+                    editarDocumento(docId);
+                });
+            });
+
+            docsList.querySelectorAll('.btn-delete').forEach(button => {
+                button.addEventListener('click', function() {
+                    const docId = parseInt(this.getAttribute('data-id'));
+                    borrarDocumento(docId);
+                });
+            });
+        }
+
+        // Función para actualizar opciones de filtros
+        function actualizarOpcionesFiltros() {
+            const filterCat = document.getElementById('filterCategoria');
+            const filterInm = document.getElementById('filterInmueble');
+            
+            // Guardar valores actuales
+            const currentCat = filterCat.value;
+            const currentInm = filterInm.value;
+            
+            // Llenar categorías
+            filterCat.innerHTML = '<option value="">Todas las categorías</option>';
+            categoriasDocumentos.forEach(cat => {
+                filterCat.innerHTML += `<option value="${cat.id}" ${currentCat === cat.id ? 'selected' : ''}>${cat.nombre}</option>`;
+            });
+            
+            // Llenar inmuebles
+            filterInm.innerHTML = '<option value="">Todos los inmuebles</option>';
+            inmuebles.forEach(inm => {
+                filterInm.innerHTML += `<option value="${inm.id}" ${currentInm === inm.id.toString() ? 'selected' : ''}>${inm.nombre}</option>`;
+            });
+        }
+
+        // Eventos para filtros de documentos
+        document.getElementById('searchDocumentos').addEventListener('input', cargarDocumentos);
+        document.getElementById('filterCategoria').addEventListener('change', cargarDocumentos);
+        document.getElementById('filterInmueble').addEventListener('change', cargarDocumentos);
+        
+        // Actualizar dashboard
+        function actualizarDashboard() {
+            // Calcular estadísticas
+            const totalInmuebles = inmuebles.length;
+            const totalDocumentos = documentos.length;
+            
+            const tiposUnicos = [...new Set(inmuebles.map(i => i.tipo))];
+            const totalTipos = tiposUnicos.length;
+            
+            // Actualizar UI
+            document.getElementById('total-inmuebles').textContent = totalInmuebles;
+            document.getElementById('total-documentos').textContent = totalDocumentos;
+            document.getElementById('total-tipos').textContent = totalTipos;
+            
+            // Obtener fecha de última actualización
+            if (actividad.length > 0) {
+                const ultimaActividad = actividad[0];
+                document.getElementById('ultima-actualizacion').textContent = formatearFecha(ultimaActividad.fecha);
+            }
+            
+            // Cargar actividades
+            const activityList = document.getElementById('activity-list');
+            activityList.innerHTML = '';
+            
+            // Mostrar máximo 5 actividades
+            const actividadesMostrar = actividad.slice(0, 5);
+            
+            actividadesMostrar.forEach(act => {
+                // Obtener ícono según tipo de actividad
+                let icono = 'fa-info-circle';
+                if (act.tipo === 'registro') icono = 'fa-home';
+                if (act.tipo === 'documento') icono = 'fa-file-alt';
+                
+                const activityItem = document.createElement('div');
+                activityItem.className = 'activity-item';
+                activityItem.innerHTML = `
+                    <div class="activity-icon">
+                        <i class="fas ${icono}"></i>
+                    </div>
+                    <div class="activity-info">
+                        <p>${act.descripcion}</p>
+                        <p class="time">${formatearFecha(act.fecha)}</p>
+                    </div>
+                `;
+                
+                activityList.appendChild(activityItem);
+            });
+        }
+        
+        // Mostrar documentos de un inmueble específico en modal
+        function mostrarDocumentosInmueble(inmuebleId) {
+            currentModalInmuebleId = inmuebleId;
+            const inmueble = inmuebles.find(i => i.id === inmuebleId);
+            const documentosInmueble = documentos.filter(doc => doc.inmuebleId === inmuebleId);
+            
+            // Actualizar título del modal
+            document.getElementById('modalTitle').textContent = `Detalles: ${inmueble.nombre}`;
+            
+            const modalDocsList = document.getElementById('modalDocsList');
+            modalDocsList.innerHTML = '';
+            
+            // Sección de información básica y link de ubicación
+            const infoSection = document.createElement('div');
+            infoSection.style.marginBottom = '20px';
+            infoSection.style.padding = '15px';
+            infoSection.style.background = '#f9f9f9';
+            infoSection.style.borderRadius = '8px';
+            infoSection.style.border = '1px solid #eee';
+            
+            let ubicacionHtml = '';
+            if (inmueble.ubicacionLink) {
+                ubicacionHtml = `
+                    <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <span style="font-weight: 600; color: var(--dark);"><i class="fas fa-map-marker-alt" style="color: #ea4335;"></i> Ubicación:</span>
+                        <a href="${inmueble.ubicacionLink}" target="_blank" class="btn btn-sm" style="background: #ea4335; color: white; padding: 4px 10px; border-radius: 4px; text-decoration: none; font-size: 0.8rem;">
+                            <i class="fas fa-external-link-alt"></i> Ver en Google Maps
+                        </a>
+                        <button class="btn-edit-location" data-id="${inmueble.id}" style="background: none; border: none; color: var(--gray); cursor: pointer; font-size: 0.8rem; text-decoration: underline; padding: 0;">
+                            Editar link
+                        </button>
+                    </div>
+                `;
+            } else {
+                ubicacionHtml = `
+                    <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">
+                        <span style="color: var(--gray); font-size: 0.9rem; font-style: italic;">
+                            <i class="fas fa-info-circle"></i> Sin link de ubicación.
+                        </span>
+                        <button class="btn-edit-location" data-id="${inmueble.id}" style="background: var(--light-gray); border: none; color: var(--dark); cursor: pointer; font-size: 0.75rem; padding: 3px 8px; border-radius: 4px;">
+                            <i class="fas fa-plus"></i> Agregar link
+                        </button>
+                    </div>
+                `;
+            }
+            
+            infoSection.innerHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9rem;">
+                    <div><strong><i class="fas fa-map"></i> Dirección:</strong> ${inmueble.direccion}, ${inmueble.ciudad}</div>
+                    <div><strong><i class="fas fa-ruler-combined"></i> Tamaño:</strong> ${inmueble.metros} m²</div>
+                    <div><strong><i class="fas fa-bed"></i> Hab:</strong> ${inmueble.habitaciones}</div>
+                    <div><strong><i class="fas fa-bath"></i> Baños:</strong> ${inmueble.banos}</div>
+                </div>
+                ${ubicacionHtml}
+            `;
+            modalDocsList.appendChild(infoSection);
+
+            // Separar imágenes de referencia de otros documentos
+            const imagenesReferencia = documentosInmueble.filter(doc => doc.categoria === 'referencia');
+            const otrosDocumentos = documentosInmueble.filter(doc => doc.categoria !== 'referencia');
+
+            // Sección de Imágenes de Referencia
+            if (imagenesReferencia.length > 0) {
+                const imgHeader = document.createElement('h4');
+                imgHeader.innerHTML = '<i class="fas fa-images"></i> Imágenes de Referencia';
+                imgHeader.style.margin = '20px 0 10px 0';
+                imgHeader.style.color = 'var(--primary)';
+                modalDocsList.appendChild(imgHeader);
+
+                const imgGrid = document.createElement('div');
+                imgGrid.style.display = 'grid';
+                imgGrid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(120px, 1fr))';
+                imgGrid.style.gap = '10px';
+                imgGrid.style.marginBottom = '20px';
+
+                imagenesReferencia.forEach(img => {
+                    const imgContainer = document.createElement('div');
+                    imgContainer.style.position = 'relative';
+                    imgContainer.style.borderRadius = '8px';
+                    imgContainer.style.overflow = 'hidden';
+                    imgContainer.style.height = '100px';
+                    imgContainer.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+                    imgContainer.style.cursor = 'pointer';
+                    
+                    imgContainer.innerHTML = `
+                        <img src="${img.data}" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); color: white; font-size: 0.7rem; padding: 2px 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            ${img.nombre}
+                        </div>
+                        <div class="img-actions" style="position: absolute; top: 5px; right: 5px; display: flex; gap: 5px;">
+                            <button onclick="event.stopPropagation(); borrarDocumento(${img.id})" style="background: rgba(255,255,255,0.8); border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 0.7rem; color: #dc3545; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    imgContainer.onclick = () => {
+                        const win = window.open();
+                        win.document.write(`<img src="${img.data}" style="max-width: 100%;">`);
+                    };
+                    
+                    imgGrid.appendChild(imgContainer);
+                });
+                modalDocsList.appendChild(imgGrid);
+            }
+
+            // Sección de Otros Documentos
+            const docsHeader = document.createElement('h4');
+            docsHeader.innerHTML = '<i class="fas fa-file-alt"></i> Documentos Adjuntos';
+            docsHeader.style.margin = '20px 0 10px 0';
+            docsHeader.style.color = 'var(--primary)';
+            modalDocsList.appendChild(docsHeader);
+
+            if (otrosDocumentos.length === 0) {
+                const noDocs = document.createElement('div');
+                noDocs.style.textAlign = 'center';
+                noDocs.style.padding = '1rem';
+                noDocs.style.color = 'var(--gray)';
+                noDocs.style.fontSize = '0.9rem';
+                noDocs.innerHTML = '<i class="fas fa-info-circle"></i> No hay otros documentos adjuntos.';
+                modalDocsList.appendChild(noDocs);
+            } else {
+                const docsList = document.createElement('div');
+                docsList.className = 'docs-list';
+                
+                otrosDocumentos.forEach(doc => {
+                    // Obtener ícono según tipo de archivo
+                    let icono = 'fa-file';
+                    if (doc.tipo === 'pdf') icono = 'fa-file-pdf';
+                    if (doc.tipo === 'doc' || doc.tipo === 'docx') icono = 'fa-file-word';
+                    if (doc.tipo === 'xls' || doc.tipo === 'xlsx') icono = 'fa-file-excel';
+                    if (doc.tipo === 'jpg' || doc.tipo === 'jpeg' || doc.tipo === 'png') icono = 'fa-file-image';
+                    
+                    const categoria = categoriasDocumentos.find(c => c.id === doc.categoria);
+                    
+                    const docItem = document.createElement('div');
+                    docItem.className = 'doc-item';
+                    docItem.innerHTML = `
+                        <div class="doc-info">
+                            <div class="doc-icon">
+                                <i class="fas ${categoria?.icono || icono}"></i>
+                            </div>
+                            <div class="doc-details">
+                                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                    <h4 style="margin: 0;">${doc.nombre}</h4>
+                                    <span class="badge" style="background: var(--primary); color: white; font-size: 0.65rem; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px;">
+                                        ${categoria?.nombre || 'Sin categoría'}
+                                    </span>
+                                </div>
+                                <p style="margin-top: 4px; color: var(--gray); font-size: 0.85rem;">
+                                    <i class="fas fa-hdd" style="width: 14px;"></i> ${doc.tamaño} 
+                                    <span style="margin: 0 5px;">•</span>
+                                    <i class="fas fa-calendar-alt" style="width: 14px;"></i> ${formatearFecha(doc.fecha)}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="doc-actions">
+                            <button class="btn-view" data-id="${doc.id}" title="Ver">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn-download" data-id="${doc.id}" title="Descargar">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="btn-edit" data-id="${doc.id}" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-delete" data-id="${doc.id}" title="Borrar">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    `;
+                    
+                    docsList.appendChild(docItem);
+                });
+                
+                modalDocsList.appendChild(docsList);
+            }
+
+            // Eventos para editar link de ubicación
+            modalDocsList.querySelectorAll('.btn-edit-location').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    const inmueble = inmuebles.find(i => i.id === id);
+                    const nuevoLink = prompt("Ingresa el link de ubicación (Google Maps):", inmueble.ubicacionLink || "");
+                    
+                    if (nuevoLink !== null) {
+                        inmueble.ubicacionLink = nuevoLink;
+                        guardarDatosEnStorage();
+                        mostrarDocumentosInmueble(id);
+                        cargarInmuebles(); // Actualizar el icono en la tarjeta
+                        alert("Link de ubicación actualizado.");
+                    }
+                });
+            });
+            
+            // Agregar eventos a los botones dentro del modal
+                modalDocsList.querySelectorAll('.btn-view').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const docId = parseInt(this.getAttribute('data-id'));
+                        verDocumento(docId);
+                    });
+                });
+                
+                modalDocsList.querySelectorAll('.btn-download').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const docId = parseInt(this.getAttribute('data-id'));
+                        descargarDocumento(docId);
+                    });
+                });
+
+                modalDocsList.querySelectorAll('.btn-edit').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const docId = parseInt(this.getAttribute('data-id'));
+                        editarDocumento(docId);
+                    });
+                });
+
+                modalDocsList.querySelectorAll('.btn-delete').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const docId = parseInt(this.getAttribute('data-id'));
+                        borrarDocumento(docId);
+                    });
+                });
+            
+            // Mostrar modal
+            document.getElementById('documentosModal').classList.add('active');
+        }
+        
+        // Ver documento (funcional con Base64)
+        function verDocumento(docId) {
+            const doc = documentos.find(d => d.id === docId);
+            if (doc && doc.data) {
+                const win = window.open();
+                win.document.write(`<iframe src="${doc.data}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
+            } else {
+                alert(`Visualizando documento: ${doc.nombre}\n\nNota: Este es un documento de ejemplo sin contenido real.`);
+            }
+        }
+        
+        // Descargar documento (funcional con Base64)
+        function descargarDocumento(docId) {
+            const doc = documentos.find(d => d.id === docId);
+            if (doc && doc.data) {
+                const link = document.createElement('a');
+                link.href = doc.data;
+                link.download = doc.nombre;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                alert(`Descargando documento: ${doc.nombre}\n\nNota: Este es un documento de ejemplo sin contenido real.`);
+            }
+        }
+
+        // Editar documento
+        function editarDocumento(docId) {
+            const doc = documentos.find(d => d.id === docId);
+            
+            // Crear prompt personalizado para nombre y categoría
+            const nuevoNombre = prompt("Editar nombre del documento:", doc.nombre);
+            if (nuevoNombre === null) return; // Cancelado
+
+            const optionsHtml = categoriasDocumentos.map(cat => 
+                `${cat.id}: ${cat.nombre}`
+            ).join('\n');
+            
+            const nuevaCat = prompt(`Selecciona la categoría:\n\n${optionsHtml}\n\nEscribe el código:`, doc.categoria || 'otro');
+            
+            if (nuevoNombre.trim() !== "") {
+                doc.nombre = nuevoNombre;
+                if (nuevaCat && categoriasDocumentos.some(c => c.id === nuevaCat)) {
+                    doc.categoria = nuevaCat;
+                }
+                
+                guardarDatosEnStorage();
+                
+                // Recargar vistas si están activas
+                const activePage = document.querySelector('.nav-link.active').getAttribute('data-page');
+                if (activePage === 'documentos') cargarDocumentos();
+                if (activePage === 'inmuebles') {
+                    // Si el modal está abierto, refrescarlo
+                    if (document.getElementById('documentosModal').classList.contains('active')) {
+                        mostrarDocumentosInmueble(doc.inmuebleId);
+                    }
+                }
+                
+                alert("Documento actualizado correctamente");
+            }
+        }
+
+        // Borrar documento
+        function borrarDocumento(docId) {
+            if (confirm("¿Estás seguro de que deseas eliminar este documento?")) {
+                const docIndex = documentos.findIndex(d => d.id === docId);
+                const doc = documentos[docIndex];
+                const inmuebleId = doc.inmuebleId;
+                
+                // Eliminar del array global
+                documentos.splice(docIndex, 1);
+                
+                // Eliminar referencia en el inmueble
+                const inmueble = inmuebles.find(i => i.id === inmuebleId);
+                if (inmueble) {
+                    inmueble.documentos = inmueble.documentos.filter(id => id !== docId);
+                }
+                
+                guardarDatosEnStorage();
+                
+                // Recargar vistas
+                const activePage = document.querySelector('.nav-link.active').getAttribute('data-page');
+                if (activePage === 'documentos') cargarDocumentos();
+                if (activePage === 'inmuebles') {
+                    if (document.getElementById('documentosModal').classList.contains('active')) {
+                        mostrarDocumentosInmueble(inmuebleId);
+                    }
+                    cargarInmuebles(); // Para actualizar el contador de documentos
+                }
+                
+                alert("Documento eliminado correctamente");
+            }
+        }
+        
+        // Formatear fecha
+        function formatearFecha(fechaStr) {
+            const fecha = new Date(fechaStr);
+            return fecha.toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+        
+        
+        // Registrar nuevo inmueble
+        document.getElementById('formRegistroInmueble').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Mostrar indicador de carga si fuera necesario
+            const btnSubmit = this.querySelector('button[type="submit"]');
+            const originalText = btnSubmit.innerHTML;
+            btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registrando...';
+            btnSubmit.disabled = true;
+
+            try {
+                // Obtener datos del formulario
+                const formData = new FormData(this);
+                const nuevoInmueble = {
+                    id: inmuebles.length > 0 ? Math.max(...inmuebles.map(i => i.id)) + 1 : 1,
+                    nombre: formData.get('nombre'),
+                    tipo: formData.get('tipo'),
+                    direccion: formData.get('direccion'),
+                    ciudad: formData.get('ciudad'),
+                    metros: parseFloat(formData.get('metros')),
+                    habitaciones: formData.get('habitaciones') ? parseInt(formData.get('habitaciones')) : 0,
+                    banos: formData.get('banos') ? parseFloat(formData.get('banos')) : 0,
+                    estacionamientos: formData.get('estacionamientos') ? parseInt(formData.get('estacionamientos')) : 0,
+                    descripcion: formData.get('descripcion'),
+                    ubicacionLink: formData.get('ubicacionLink'),
+                    fechaRegistro: new Date().toISOString().split('T')[0],
+                    documentos: []
+                };
+                
+                // Agregar inmueble a la lista
+                inmuebles.push(nuevoInmueble);
+                
+                // Registrar actividad
+                const nuevaActividad = {
+                    tipo: 'registro',
+                    descripcion: `Se registró el inmueble '${nuevoInmueble.nombre}'`,
+                    fecha: new Date().toISOString().split('T')[0]
+                };
+                
+                actividad.unshift(nuevaActividad);
+                
+                // Guardar datos en localStorage
+                guardarDatosEnStorage();
+                
+                // Limpiar formulario
+                this.reset();
+                
+                // Mostrar mensaje de éxito
+                alert('Inmueble registrado exitosamente');
+                
+                // Redirigir a la página de inmuebles
+                document.querySelector('[data-page="inmuebles"]').click();
+            } catch (error) {
+                console.error("Error al registrar inmueble:", error);
+                alert("Hubo un error al registrar el inmueble.");
+            } finally {
+                btnSubmit.innerHTML = originalText;
+                btnSubmit.disabled = false;
+            }
+        });
+
+        // Función auxiliar para leer archivos como Base64
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        // Botón para nuevo inmueble desde la página de inmuebles
+        document.getElementById('btnNuevoInmueble').addEventListener('click', function() {
+            document.querySelector('[data-page="registro"]').click();
+        });
+        
+        // Cerrar modal
+        document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('documentosModal').classList.remove('active');
+        });
+        
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('documentosModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.remove('active');
+            }
+        });
+        
+        // Buscar inmuebles
+        document.getElementById('searchInmuebles').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            // Filtrar inmuebles
+            const inmueblesFiltrados = inmuebles.filter(inmueble => 
+                inmueble.nombre.toLowerCase().includes(searchTerm) ||
+                inmueble.ciudad.toLowerCase().includes(searchTerm) ||
+                inmueble.tipo.toLowerCase().includes(searchTerm)
+            );
+            
+            // Actualizar UI usando la función centralizada
+            cargarInmuebles(inmueblesFiltrados);
+        });
+        
+        // Inicialización
+        window.addEventListener('DOMContentLoaded', function() {
+            // Cargar datos desde localStorage o inicializar con ejemplos
+            cargarDatosDesdeStorage();
+            
+            // Si no hay datos, inicializar con ejemplos
+            if (inmuebles.length === 0) {
+                inicializarDatosEjemplo();
+            }
+            
+            // Actualizar dashboard
+            actualizarDashboard();
+            
+            // Cargar inmuebles
+            cargarInmuebles();
+        });
+    </script>
+</body>
+</html>
